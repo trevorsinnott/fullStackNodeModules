@@ -22,6 +22,10 @@ let persons = [
   },
 ];
 
+const generateId = () => {
+  return `_${Math.random().toString(36).substr(2, 9)}`;
+};
+
 app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
@@ -54,10 +58,8 @@ app.delete("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons", (req, res) => {
   const person = req.body;
-  const maxId =
-    persons.length > 0 ? Math.max(...persons.map((person) => person.id)) : 0;
 
-  person.id = maxId + 1;
+  person.id = generateId();
 
   persons = persons.concat(person);
 
