@@ -57,9 +57,27 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  const person = req.body;
+  const body = req.body;
 
-  person.id = generateId();
+  if (!body.name) {
+    return res.status(404).json({ error: "name missing" });
+  } else if (!body.number) {
+    return res.status(404).json({ error: "number missing" });
+  } else if (
+    persons.some(
+      (person) => person.name.toLowerCase() === body.name.toLowerCase()
+    )
+  ) {
+    return res.status(404).json({ error: `${body.name} already in phonebook` });
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId(),
+  };
+
+  console.log(person.name);
 
   persons = persons.concat(person);
 
