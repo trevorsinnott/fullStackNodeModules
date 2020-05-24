@@ -1,6 +1,8 @@
+require("dotenv").config();
 var morgan = require("morgan");
 const cors = require("cors");
 const express = require("express");
+var Person = require("./models/person.js");
 
 const app = express();
 
@@ -50,7 +52,9 @@ const generateId = () => {
 };
 
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((people) => {
+    res.json(people);
+  });
 });
 
 app.get("/info", (req, res) => {
